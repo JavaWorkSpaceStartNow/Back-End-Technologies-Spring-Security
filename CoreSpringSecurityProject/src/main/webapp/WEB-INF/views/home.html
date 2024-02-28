@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>Home Page</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+	<div class="jumbotron text-center" sec:authorize="isAuthenticated()">
+		<h1>Welcome To [[${page}]] Page</h1>
+
+		<p th:if="${page != 'home'}">As I Rember Your Role Is @ <span
+				sec:authorize="hasRole('ROLE_ADMIN')">ADMIN</span><span
+				sec:authorize="hasRole('ROLE_MANAGER')">MANAGER</span><span
+				sec:authorize="hasRole('ROLE_EMPLOYEE')">EMPLOYEE</span>!</p>
+	</div>
+
+	<div class="container">
+		<div class="row" th:if="${page != 'Home'}">
+
+			<div class="col-sm-4">
+				User:
+				<span th:text="${#authentication.name}"></span>
+				<br><br>
+				Role:
+				<span th:with="authorities=${#authentication.getAuthorities()}">
+					<span th:each="authority : ${authorities}">
+						<span th:text="${authority.authority}"></span>
+					</span>
+				</span>
+			</div>
+			<div class="col-sm-4">
+
+			</div>
+			<div class="col-sm-4">
+
+			</div>
+		</div>
+	</div><br><br><br><br><br><br>
+	<div class="row mt-5">
+		<div class="col-sm-4 d-flex">
+			<a th:href="@{/admin/page}" class="btn btn-primary align-items-center justify-content-center">Admin
+				Page</a>
+		</div>
+		<div class="col-sm-4 d-flex">
+			<a th:href="@{/manager/page}" class="btn btn-primary align-items-center justify-content-center">Manager
+				Page</a>
+		</div>
+		<div class="col-sm-4 d-flex">
+			<a th:href="@{/employee/page}" class="btn btn-primary  align-items-center justify-content-center">Employee
+				Page</a>
+		</div>
+	</div><br><br><br><br><br><br>
+	<div class="row mt-5">
+
+		<div class="col-sm-6">
+
+		</div>
+		<div class="col-sm-2">
+			<!-- Add a logout button -->
+			<form th:action="@{/logout}" method="POST">
+				<input type="submit" value="Logout" class="btn btn-danger" />
+			</form>
+		</div>
+		<div class="col-sm-6">
+
+		</div>
+	</div>
+
+</body>
+
+</html>
